@@ -92,18 +92,20 @@
     .skip { position: absolute; left: -999px; }
     .skip:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--card); padding: .5rem 1rem; }
 
-    /* Header: stacked and centered on phones, logo left / info right on desktop */
-    header {
+    /* Header: stacked and centered on phones; brand left / info right on desktop */
+    .site-head {
       display: flex; flex-direction: column; align-items: center; gap: 1rem;
-      padding-top: 1.5rem; padding-bottom: 1.5rem;
+      padding: 1.25rem 1rem 1.75rem;
       text-align: center;
     }
-    header img { width: min(78vw, 20rem); height: auto; }
-    header h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .site-head h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .brand { display: flex; flex-direction: column; align-items: center; }
+    .brand img { width: min(72vw, 18rem); height: auto; }
+    .brand p { margin: 0; font-family: var(--serif); }
+    .brand .tagline { margin-top: .4rem; font-size: 1.05rem; }
+    .since { color: var(--muted); }
     .head-info p { margin: .15rem 0; }
-    .tagline { font-family: var(--serif); font-size: 1.05rem; }
-    .since { color: var(--muted); font-family: var(--serif); }
-    .hours { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-top: .75rem !important; }
+    .hours { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; }
     .note { color: var(--muted); font-size: .875rem; }
     .nw { white-space: nowrap; }
 
@@ -180,9 +182,9 @@
     footer .greek { font-family: var(--serif); font-size: 1.3rem; color: var(--ink); margin: 0; }
 
     @media (min-width: 700px) {
-      header { flex-direction: row; justify-content: space-between; text-align: right; padding-top: 2rem; }
-      header img { width: 17rem; }
-      .head-info { max-width: 24rem; }
+      .site-head { flex-direction: row; justify-content: space-between; padding-top: 1.75rem; }
+      .brand img { width: 14rem; }
+      .head-info { max-width: 24rem; text-align: right; }
       .menu-grid { grid-template-columns: 1fr 1fr; }
       .visit-grid { grid-template-columns: repeat(3, 1fr); }
       nav.cats li:first-child { margin-left: auto; }
@@ -213,12 +215,14 @@
   <a class="skip" href="#menu">Skip to menu</a>
   <div class="key-band" aria-hidden="true"></div>
 
-  <header class="wrap">
-    <img src="assets/logo.svg" width="420" height="288" alt="Sausalito Gourmet Delicatessen logo" fetchpriority="high">
+  <header class="wrap site-head">
     <h1>Sausalito Gourmet Delicatessen</h1>
-    <div class="head-info">
+    <div class="brand">
+      <img src="assets/logo.svg" width="386" height="240" alt="Sausalito Gourmet Delicatessen logo" fetchpriority="high">
       <p class="tagline">European Style Deli with Fountain Patio</p>
       <p class="since">Family owned and operated since 1975</p>
+    </div>
+    <div class="head-info">
       <p class="hours"><span class="nw">Tuesday – Saturday</span> · <span class="nw">11AM – 6PM</span></p>
       <p>209 Caledonia Street, Sausalito · <a class="nw" href="tel:+14153324880">(415) 332-4880</a></p>
       <p class="note">Occasionally open on holiday Sundays &amp; Mondays. Check <a href="https://maps.app.goo.gl/j5ec4pawhP57d6rWA">Google</a> or <a href="https://www.yelp.com/biz/sausalito-gourmet-delicatessen-sausalito">Yelp</a> for holiday hours.</p>
