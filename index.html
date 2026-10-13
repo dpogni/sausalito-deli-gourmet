@@ -150,7 +150,8 @@
 
     /* Menu */
     main { padding-bottom: 2rem; }
-    section { scroll-margin-top: 4rem; }
+    main, section { scroll-margin-top: 4.5rem; }
+    main:focus { outline: none; }
     .menu-grid { display: grid; gap: 0 2.5rem; }
     .menu-section { padding-top: 1.5rem; }
     .menu-section > h2 {
@@ -259,7 +260,7 @@
     </ul>
   </nav>
 
-  <main id="menu" class="wrap">
+  <main id="menu" class="wrap" tabindex="-1">
     <h2 class="sub" style="text-align:center;margin-top:1.25rem">Our Menu</h2>
     <div class="menu-grid">
 
@@ -474,5 +475,22 @@
     <p>bon appétit!</p>
     <p>© Sausalito Gourmet Delicatessen · Family owned and operated since 1975</p>
   </footer>
+  <script>
+    // In-page links: scroll so the target clears the sticky menu bar, and update the
+    // #hash with replaceState. A real hash navigation makes Chromium-based mobile
+    // browsers (e.g. Brave) re-show their URL bar mid-jump, hiding the heading.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      var target = document.getElementById(a.getAttribute("href").slice(1));
+      if (!target) return;
+      e.preventDefault();
+      var nav = document.querySelector("nav.cats");
+      var offset = (nav ? nav.getBoundingClientRect().height : 0) + 8;
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset });
+      history.replaceState(null, "", a.getAttribute("href"));
+      if (a.classList.contains("skip")) target.focus({ preventScroll: true });
+    });
+  </script>
 </body>
 </html>
