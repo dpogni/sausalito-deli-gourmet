@@ -69,8 +69,6 @@
       --ink: #1f1f1f;
       --muted: #555;
       --accent: #1d4e89;
-      --accent-ink: #ffffff;
-      --tint: #e4ffc1;
       --rule: #d9d1bf;
       --key: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 21H24M0 3H24M3 21V7H17V17H9V11H13' fill='none' stroke='%231d4e89' stroke-width='2'/%3E%3C/svg%3E");
       --serif: Rockwell, "Roboto Slab", "Zilla Slab", Georgia, "Times New Roman", serif;
@@ -94,36 +92,20 @@
     .skip { position: absolute; left: -999px; }
     .skip:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--card); padding: .5rem 1rem; }
 
-    /* Header */
-    header { text-align: center; padding: 1.5rem 0 1rem; }
-    header img { width: min(78vw, 22rem); height: auto; }
-    header h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .tagline { margin: .5rem 0 0; font-family: var(--serif); font-size: 1.05rem; }
-    .tagline span { display: block; color: var(--muted); font-size: .95rem; }
-
-    /* Quick info */
-    .info {
-      background: var(--card);
-      border: 1px solid var(--rule);
-      border-radius: .75rem;
-      padding: 1rem;
-      margin: 0 auto 1.25rem;
-      max-width: 34rem;
+    /* Header: stacked and centered on phones, logo left / info right on desktop */
+    header {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
       text-align: center;
     }
-    .info p { margin: .15rem 0; }
-    .info .hours { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; }
+    header img { width: min(78vw, 20rem); height: auto; }
+    header h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .head-info p { margin: .15rem 0; }
+    .tagline { font-family: var(--serif); font-size: 1.05rem; }
+    .since { color: var(--muted); font-family: var(--serif); }
+    .hours { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-top: .75rem !important; }
     .note { color: var(--muted); font-size: .875rem; }
     .nw { white-space: nowrap; }
-    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .85rem; }
-    .btn {
-      display: flex; align-items: center; justify-content: center;
-      min-height: 3rem; padding: .5rem;
-      border-radius: .5rem;
-      background: var(--accent); color: var(--accent-ink);
-      font-weight: 600; text-decoration: none;
-    }
-    .btn.alt { background: var(--tint); color: var(--ink); border: 1px solid #b9d98f; }
 
     /* Sticky category nav */
     nav.cats {
@@ -198,13 +180,16 @@
     footer .greek { font-family: var(--serif); font-size: 1.3rem; color: var(--ink); margin: 0; }
 
     @media (min-width: 700px) {
-      header { padding-top: 2.5rem; }
+      header { flex-direction: row; justify-content: space-between; text-align: right; padding-top: 2rem; }
+      header img { width: 17rem; }
+      .head-info { max-width: 24rem; }
       .menu-grid { grid-template-columns: 1fr 1fr; }
       .visit-grid { grid-template-columns: repeat(3, 1fr); }
-      nav.cats ul { justify-content: center; }
+      nav.cats li:first-child { margin-left: auto; }
+      nav.cats li:last-child { margin-right: auto; }
     }
     @media print {
-      nav.cats, .actions, .skip { display: none; }
+      nav.cats, .skip { display: none; }
       body { background: #fff; }
     }
   </style>
@@ -231,21 +216,14 @@
   <header class="wrap">
     <img src="assets/logo.svg" width="420" height="288" alt="Sausalito Gourmet Delicatessen logo" fetchpriority="high">
     <h1>Sausalito Gourmet Delicatessen</h1>
-    <p class="tagline">European Style Deli with Fountain Patio<span>Family owned and operated since 1975</span></p>
-  </header>
-
-  <div class="wrap">
-    <div class="info">
+    <div class="head-info">
+      <p class="tagline">European Style Deli with Fountain Patio</p>
+      <p class="since">Family owned and operated since 1975</p>
       <p class="hours"><span class="nw">Tuesday – Saturday</span> · <span class="nw">11AM – 6PM</span></p>
-      <p>209 Caledonia Street, Sausalito</p>
+      <p>209 Caledonia Street, Sausalito · <a class="nw" href="tel:+14153324880">(415) 332-4880</a></p>
       <p class="note">Occasionally open on holiday Sundays &amp; Mondays. Check <a href="https://maps.app.goo.gl/j5ec4pawhP57d6rWA">Google</a> or <a href="https://www.yelp.com/biz/sausalito-gourmet-delicatessen-sausalito">Yelp</a> for holiday hours.</p>
-      <div class="actions">
-        <a class="btn" href="tel:+14153324880">Call</a>
-        <a class="btn" href="https://maps.app.goo.gl/j5ec4pawhP57d6rWA">Directions</a>
-        <a class="btn alt" href="#menu">Menu ↓</a>
-      </div>
     </div>
-  </div>
+  </header>
 
   <nav class="cats" aria-label="Menu sections">
     <ul>
