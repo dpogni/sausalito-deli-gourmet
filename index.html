@@ -75,8 +75,7 @@
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
       background: var(--bg);
@@ -458,19 +457,33 @@
     <p>© Sausalito Gourmet Delicatessen · Family owned and operated since 1975</p>
   </footer>
   <script>
-    // In-page links: scroll so the target clears the sticky menu bar, and update the
-    // #hash with replaceState. A real hash navigation makes Chromium-based mobile
-    // browsers (e.g. Brave) re-show their URL bar mid-jump, hiding the heading.
+    // Always open at the top on reload / pull-to-refresh. Restoring the old scroll
+    // position on mobile Chromium (e.g. Brave) can leave the page sitting under the
+    // re-shown URL bar, covering the logo.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    // In-page links: scroll so the target clears the sticky menu bar. A real hash
+    // navigation makes Chromium-based mobile browsers (e.g. Brave) re-show their URL
+    // bar mid-jump, hiding the heading. When handled here, the #hash is not written
+    // to the URL, so a reload or reopened tab starts at the top.
+    // Smooth scrolling is applied here only; as a CSS rule it also animated the
+    // browser's own scroll on page load, which looked like the page scrolling itself.
+    var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.addEventListener("click", function (e) {
       var a = e.target.closest('a[href^="#"]');
       if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
       var target = document.getElementById(a.getAttribute("href").slice(1));
       if (!target) return;
-      e.preventDefault();
+      // Only take over once the menu bar is stuck to the top of the screen. Above
+      // that (around the logo), leave the browser's own link handling alone.
       var nav = document.querySelector("nav.cats");
+      if (!a.classList.contains("skip") && nav && nav.getBoundingClientRect().top > 1) return;
+      e.preventDefault();
       var offset = (nav ? nav.getBoundingClientRect().height : 0) + 8;
-      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset });
-      history.replaceState(null, "", a.getAttribute("href"));
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY - offset,
+        behavior: smooth ? "smooth" : "auto"
+      });
       if (a.classList.contains("skip")) target.focus({ preventScroll: true });
     });
   </script>
